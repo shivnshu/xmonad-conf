@@ -3,14 +3,14 @@ _A fully functional window manager configuration files_
 
 ## Keyboard shortcuts
 
-|                  Key Binding 1                        |               Action                 |
+|                  Key Binding                          |               Action                 |
 |------------------------------------------------------:|:-------------------------------------|
 | <kbd>Windows</kbd>+<kbd>Shift</kbd>+<kbd>Return</kbd> |         Start a terminal             |
 | <kbd>Windows</kbd>+<kbd>Shift</kbd>+<kbd>l</kbd>      |         Lock screen                  |
 | <kbd>Windows</kbd>+<kbd>Shift</kbd>+<kbd>c</kbd>      |         Close focused window         |
-| <kbd>Windows</kbd>+<kbd>d</kbd>                       |         Start dmenu                  |
-| <kbd>Windows</kbd>+<kbd>m</kbd>                       |         Start nautilus
-| <kbd>PrtSc</kbd>                                      |         Take screenshot              |
+| <kbd>Windows</kbd>+<kbd>d</kbd>                       |         Start dmenu.  Once it comes up, type the name of a program and enter |
+| <kbd>Windows</kbd>+<kbd>m</kbd>                       |         Start nautilus, press again to go to nautilus workspace |
+| <kbd>PrtSc</kbd>                                      |         Take screenshot and save it in ~/screenshot/ folder if it exists |
 | <kbd>Windows</kbd>+<kbd>Shift</kbd>+<kbd>c</kbd>      |         Close focus window           |
 | <kbd>Windows</kbd>+<kbd>Space</kbd>                   |         Change workspace layout      |
 | <kbd>Windows</kbd>+<kbd>Shift</kbd>+<kbd>Space</kbd>  |         Change back to default workspace layout |
