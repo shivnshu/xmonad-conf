@@ -1,36 +1,36 @@
 -- Imports.
-import qualified Data.Map    as M
-import Data.Ratio
+import qualified Data.Map    as M             -- Unordered Map implementation in haskell
+import Data.Ratio                             -- Standard functions on rational numbers
 
 import XMonad
-import XMonad.Actions.CopyWindow
-import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.ManageDocks
-import XMonad.Hooks.ManageHelpers
-import XMonad.Actions.CycleWS
+import XMonad.Actions.CopyWindow              -- Bindings to duplicate a window on multiple workspaces
+import XMonad.Hooks.DynamicLog                -- System status information
+import XMonad.Hooks.ManageDocks               -- Manage dock type programs such as gnome-panel, kicker, dzen
+import XMonad.Hooks.ManageHelpers             -- Helper functions to be used in manageHook
+import XMonad.Actions.CycleWS                 -- Move windows between workspaces, cycle between screens
 
-import XMonad.Layout.Combo
-import XMonad.Layout.Grid
-import XMonad.Layout.Gaps
-import XMonad.Layout.LayoutModifier
-import XMonad.Layout.Named
-import XMonad.Layout.NoBorders
-import XMonad.Layout.PerWorkspace
-import XMonad.Layout.Reflect
-import XMonad.Layout.TwoPane
-import XMonad.Layout.WindowNavigation
-import XMonad.Layout.Circle
-import XMonad.Layout.MosaicAlt
-import XMonad.Layout.Spiral
-import XMonad.Layout.SimpleFloat
+import XMonad.Layout.Combo                    -- Combines multiple layouts
+import XMonad.Layout.Grid                     -- Put all windows in a square grid
+import XMonad.Layout.Gaps                     -- Manually create gaps along edges of screen
+import XMonad.Layout.LayoutModifier           -- Helps in modifying the behavior of other layouts
+import XMonad.Layout.Named                    -- Assign name to a layout
+import XMonad.Layout.NoBorders                -- Useful for full screen
+import XMonad.Layout.PerWorkspace             -- Use layouts and apply layout modifiers selectively
+import XMonad.Layout.Reflect                  -- Reflect a layout horizontally or vertically
+import XMonad.Layout.TwoPane                  -- Layout splits the screen horizontally into 2, left is master
+import XMonad.Layout.WindowNavigation         -- easy navigation of a workspace
+import XMonad.Layout.Circle                   -- An elliptical, overlapping layout
+import XMonad.Layout.MosaicAlt                -- Gives each window a specified amount of screen space relative to the others
+import XMonad.Layout.Spiral                   -- Spiral tiling layout
+import XMonad.Layout.SimpleFloat              -- Basic floating layout
 
-import DBus.Client
+import DBus.Client                            -- Abstraction over the lower-level messaging system
 import System.Taffybar.XMonadLog ( dbusLogWithPP, taffybarDefaultPP, taffybarColor, taffybarEscape )
-import qualified Debug.Trace as D
-import qualified XMonad.StackSet as W
+import qualified Debug.Trace as D             -- Debugging
+import qualified XMonad.StackSet as W         -- Window manager abstraction
 
-import XMonad.Hooks.EwmhDesktops (ewmh)
-import System.Taffybar.Hooks.PagerHints (pagerHints)
+import XMonad.Hooks.EwmhDesktops (ewmh)       -- Allows the user to interact with xmonad by clicking
+import System.Taffybar.Hooks.PagerHints (pagerHints) -- Complements the XMonad.Hooks.EwmhDesktops with two additional hints
 
 import System.IO
 import System.Exit
@@ -40,7 +40,7 @@ myTerminal = "urxvt"
 myModMask  = mod4Mask
 altMask    = mod1Mask
 
-myWorkSpaces = ["1:Web", "2:Terminal", "3:Files", "4:VMs", "5:Docs", "6:Music", "7:Email", "8:Chat", "9:Misc"]
+myWorkSpaces = ["1:Web", "2:Terminal", "3:Emacs", "4:Files", "5:VMs", "6:Chat", "7:Music", "8:Misc", "9:Misc"]
 
 -- Key mapping {{{
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
@@ -48,7 +48,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. shiftMask,      xK_Return   ), spawn $ XMonad.terminal conf)
 --    , ((modMask,                    xK_F2       ), spawn "gmrun")
     , ((modMask .|. shiftMask,      xK_c        ), kill)
-    , ((modMask .|. shiftMask,      xK_l        ), spawn "slock")
+    , ((modMask .|. shiftMask, xK_l ), spawn "slock")
     -- Programs
     , ((0,                          xK_Print    ), spawn "scrot -e 'mv $f ~/screenshots/'")
     , ((modMask,                    xK_m        ), spawn "nautilus --no-desktop --browser")
@@ -61,7 +61,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- layouts
     , ((modMask,                    xK_space    ), sendMessage NextLayout)
     , ((modMask .|. shiftMask,      xK_space    ), setLayout $ XMonad.layoutHook conf)          -- reset layout on current desktop to default
-    , ((modMask,                    xK_b        ), sendMessage ToggleStruts)
+    , ((modMask,                    xK_b        ), sendMessage ToggleStruts)                    -- Fullscreen current window
     , ((modMask,                    xK_n        ), refresh)
     , ((modMask,                    xK_Tab      ), windows W.focusDown)                         -- move focus to next window
     , ((modMask .|. shiftMask,      xK_Tab      ), windows W.focusUp  )
@@ -145,21 +145,24 @@ myManageHook = (composeAll . concat $
     , [className    =?  c           --> doFloat                 | c <-  myFloats  ]
     , [className    =?  c           --> doShift "1:Web"         | c <-  myWebs    ]
     , [className    =?  c           --> doShift "2:Terminal"    | c <-  myDev     ]
-    , [className    =?  c           --> doShift "3:Files"       | c <-  myFiles   ]
-    , [className    =?  c           --> doShift "4:VMs"         | c <-  myVms    ]
-    , [className    =?  c           --> doShift "6:Music"       | c <-  myMusic   ]
+    , [className    =?  c           --> doShift "3:Emacs"       | c <-  myEmacs   ]
+    , [className    =?  c           --> doShift "4:Files"       | c <-  myFiles   ]
+    , [className    =?  c           --> doShift "5:VMs"         | c <-  myVMs     ]
+    , [className    =?  c           --> doShift "6:Chat"        | c <-  myChat   ]
+    , [className    =?  c           --> doShift "7:Music"       | c <-  myMusic   ]
     , [isFullscreen                 --> myDoFullFloat                             ]
     ])
     
     where
       myWebs  = ["Firefox","Google-chrome"]
-      myDev   = ["Urxvt"]
+      myDev   = ["URxvt"]
       myFiles = ["Nautilus"]
+      myEmacs = ["Emacs"]
       myChat  = ["Slack"]
       myMusic = ["Rhythmbox"]
-      myVms   = ["virtualbox", "virt-manager", "qemu"]
+      myVMs   = ["virtualbox", "virt-manager", "qemu"]
       myIgnores = ["desktop","trayer"]
-      myFloats  = ["Guake"]
+      myFloats  = []
 
 myDoFullFloat :: ManageHook
 myDoFullFloat = doF W.focusDown <+> doFullFloat
