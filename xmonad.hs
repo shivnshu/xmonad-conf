@@ -36,7 +36,7 @@ import System.IO
 import System.Exit
 
 --  Variables definition
-myTerminal = "urxvt"
+myTerminal = "termite"
 myModMask  = mod4Mask
 altMask    = mod1Mask
 
@@ -155,12 +155,12 @@ myManageHook = (composeAll . concat $
     
     where
       myWebs  = ["Firefox","Google-chrome"]
-      myDev   = ["URxvt"]
+      myDev   = ["URxvt", "Termite"]
       myFiles = ["Nautilus"]
       myEmacs = ["Emacs"]
       myChat  = ["Slack"]
       myMusic = ["Rhythmbox"]
-      myVMs   = ["virtualbox", "virt-manager", "qemu"]
+      myVMs   = ["virtualbox", "Virt-manager", "qemu"]
       myIgnores = ["desktop","trayer"]
       myFloats  = []
 
