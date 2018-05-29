@@ -40,22 +40,24 @@ myTerminal = "termite"
 myModMask  = mod4Mask
 altMask    = mod1Mask
 
-myWorkSpaces = ["1:Web", "2:Terminal", "3:Emacs", "4:Files", "5:VMs", "6:Chat", "7:Music", "8:Misc", "9:Misc"]
+myWorkSpaces = ["1:Web", "2:Terminal", "3:Emacs", "4:Files", "5:VMs", "6:Chat", "7:Music", "8:Book", "9:Misc"]
 
 -- Key mapping {{{
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
-    [ ((modMask,                    xK_d        ), spawn "dmenu_run -fn 'terminus-16'")
+--    [ ((modMask,                    xK_d        ), spawn "dmenu_run -fn 'liberation mono-14'")
+      [ ((modMask,                    xK_d        ), spawn "rofi -show run")
+--      [ ((modMask,                    xK_d        ), spawn "rofi -run-list-command '. /home/shivnshu/Scripts/zsh_aliases_functions.sh' -run-command '/bin/zsh -i -c {cmd}' -rnow -show run")
     , ((modMask .|. shiftMask,      xK_Return   ), spawn $ XMonad.terminal conf)
 --    , ((modMask,                    xK_F2       ), spawn "gmrun")
     , ((modMask .|. shiftMask,      xK_c        ), kill)
     , ((modMask .|. shiftMask, xK_l ), spawn "slock")
     -- Programs
     , ((0,                          xK_Print    ), spawn "scrot -e 'mv $f ~/screenshots/'")
-    , ((modMask,                    xK_m        ), spawn "nautilus --no-desktop --browser")
+    , ((modMask,                    xK_m        ), spawn "nautilus --browser")
     -- Media Keys
-    , ((0,                          0x1008ff12  ), spawn "pulseaudio-ctl mute")        -- XF86AudioMute
-    , ((0,                          0x1008ff11  ), spawn "pulseaudio-ctl down 10")   -- XF86AudioLowerVolume
-    , ((0,                          0x1008ff13  ), spawn "pulseaudio-ctl up 10")   -- XF86AudioRaiseVolume
+    , ((0,                          0x1008ff12  ), spawn "~/Scripts/volumemute.sh")   -- XF86AudioMute
+    , ((0,                          0x1008ff11  ), spawn "~/Scripts/volumedown.sh")   -- XF86AudioLowerVolume
+    , ((0,                          0x1008ff13  ), spawn "~/Scripts/volumeup.sh")     -- XF86AudioRaiseVolume
     , ((0,                          0x1008FF02  ), spawn "xbacklight -inc 10")
     , ((0,                          0x1008FF03  ), spawn "xbacklight -dec 10")
     -- layouts
@@ -158,7 +160,7 @@ myManageHook = (composeAll . concat $
       myDev   = ["URxvt", "Termite"]
       myFiles = ["Nautilus"]
       myEmacs = ["Emacs"]
-      myChat  = ["Slack"]
+      myChat  = ["Slack", "discord"]
       myMusic = ["Rhythmbox"]
       myVMs   = ["virtualbox", "Virt-manager", "qemu"]
       myIgnores = ["desktop","trayer"]
@@ -180,6 +182,6 @@ myConfig = defaultConfig {
   , normalBorderColor  = "#2a2b2f"
   , focusedBorderColor = "DarkOrange"
   , borderWidth        = 2
-  , startupHook        = spawn "stack exec taffybar"
+  , startupHook        = spawn "volnoti && stack exec taffybar"
   , keys               = myKeys
   }
