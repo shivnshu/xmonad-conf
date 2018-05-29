@@ -46,7 +46,6 @@ myWorkSpaces = ["1:Web", "2:Terminal", "3:Emacs", "4:Files", "5:VMs", "6:Chat", 
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 --    [ ((modMask,                    xK_d        ), spawn "dmenu_run -fn 'liberation mono-14'")
       [ ((modMask,                    xK_d        ), spawn "rofi -show run")
---      [ ((modMask,                    xK_d        ), spawn "rofi -run-list-command '. /home/shivnshu/Scripts/zsh_aliases_functions.sh' -run-command '/bin/zsh -i -c {cmd}' -rnow -show run")
     , ((modMask .|. shiftMask,      xK_Return   ), spawn $ XMonad.terminal conf)
 --    , ((modMask,                    xK_F2       ), spawn "gmrun")
     , ((modMask .|. shiftMask,      xK_c        ), kill)
@@ -55,11 +54,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((0,                          xK_Print    ), spawn "scrot -e 'mv $f ~/screenshots/'")
     , ((modMask,                    xK_m        ), spawn "nautilus --browser")
     -- Media Keys
-    , ((0,                          0x1008ff12  ), spawn "~/Scripts/volumemute.sh")   -- XF86AudioMute
-    , ((0,                          0x1008ff11  ), spawn "~/Scripts/volumedown.sh")   -- XF86AudioLowerVolume
-    , ((0,                          0x1008ff13  ), spawn "~/Scripts/volumeup.sh")     -- XF86AudioRaiseVolume
-    , ((0,                          0x1008FF02  ), spawn "xbacklight -inc 10")
-    , ((0,                          0x1008FF03  ), spawn "xbacklight -dec 10")
+    , ((0,                          0x1008ff12  ), spawn "~/config-management/Scripts/volumemute.sh")   -- XF86AudioMute
+    , ((0,                          0x1008ff11  ), spawn "~/config-management/Scripts/volumedown.sh")   -- XF86AudioLowerVolume
+    , ((0,                          0x1008ff13  ), spawn "~/config-management/Scripts/volumeup.sh")     -- XF86AudioRaiseVolume
+    , ((0,                          0x1008FF02  ), spawn "light -A 10")
+    , ((0,                          0x1008FF03  ), spawn "light -U 10")
     -- layouts
     , ((modMask,                    xK_space    ), sendMessage NextLayout)
     , ((modMask .|. shiftMask,      xK_space    ), setLayout $ XMonad.layoutHook conf)          -- reset layout on current desktop to default
